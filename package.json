@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/tim-payton/krazeybot/issues"
   },
-  "homepage": "https://github.com/tim-payton/krazeybot#readme"
+  "homepage": "https://github.com/tim-payton/krazeybot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
 }
