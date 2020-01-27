@@ -63,8 +63,8 @@ client.on("message", message => {
       playSoundEffect("feels.mp3");
       break;
     case "!insult":
-      const permissions = message.member.permissions.hasPermission(
-        "ADMINISTRATOR"
+      const permissions = message.member.roles.some(r =>
+        ["Stream team", "Admin"].includes(r.name)
       );
       console.log(`available permissions for user: ${permissions}`);
       if (permissions) {
