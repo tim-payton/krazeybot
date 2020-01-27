@@ -2,7 +2,7 @@
   "name": "krazeybot",
   "version": "1.0.0",
   "description": "A discord bot for the pro streamer KrazeyHazey",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,13 @@
   },
   "homepage": "https://github.com/tim-payton/krazeybot#readme",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "@discordjs/opus": "^0.1.0",
+    "@discordjs/uws": "^10.149.0",
+    "axios": "^0.19.2",
+    "circular-json": "^0.5.9",
+    "discord.js": "^11.5.1",
+    "ffmpeg-binaries": "^3.2.2",
+    "ffmpeg-static": "^3.0.0",
+    "opusscript": "0.0.7"
   }
 }
