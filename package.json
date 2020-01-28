@@ -26,9 +26,8 @@
     "@discordjs/uws": "^10.149.0",
     "axios": "^0.19.2",
     "circular-json": "^0.5.9",
-    "discord.js": "^11.5.1",
+    "discord.js": "github:discordjs/discord.js",
     "dotenv": "^8.2.0",
-    "ffmpeg-binaries": "^3.2.2",
     "ffmpeg-static": "^3.0.0",
     "node-opus": "^0.3.3"
   }

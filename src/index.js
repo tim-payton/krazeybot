@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const axios = require("axios");
 const client = new Discord.Client();
 const dotenv = require("dotenv");
+const ffmpeg_static = require("ffmpeg-static");
 dotenv.config();
 
 const audioPath = process.env.AUDIO_PATH;
@@ -11,24 +12,15 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on("message", message => {
-  const playSoundEffect = (file, volumeLevel) => {
-    if (message.member.voiceChannel) {
-      message.member.voiceChannel
-        .join()
-        .then(connection => {
-          // Connection is an instance of VoiceConnection
-          // To play a file, we need to give an absolute path to it
-          console.log(`attempting to play file: ${file}`);
-          const dispatcher = connection.playFile(`${audioPath}${file}`, {
-            volume: volumeLevel
-          });
-          dispatcher.on("end", () => {
-            dispatcher.destroy();
-            console.log("Finished playing!");
-          });
-        })
-        .catch(console.log);
+client.on("message", async message => {
+  const playSoundEffect = async (file, volumeLevel) => {
+    if (!message.guild) return;
+
+    if (message.member.voice.channel) {
+      const connection = await message.member.voice.channel.join();
+      const dispatcher = connection.play(`${audioPath}${file}`, {
+        volume: volumeLevel
+      });
     } else {
       message.reply("You need to join a voice channel first!");
     }
