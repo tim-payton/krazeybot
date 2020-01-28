@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const axios = require("axios");
 const client = new Discord.Client();
 const dotenv = require("dotenv");
+const shakespeare = require("shakespeare-insult");
 dotenv.config();
 
 const audioPath = process.env.AUDIO_PATH;
@@ -92,6 +93,8 @@ client.on("message", message => {
           console.log(error);
         });
       break;
+    case "!yeoldinsult":
+      message.channel.send(shakespeare.random());
     default:
       break;
   }

@@ -30,6 +30,7 @@
     "dotenv": "^8.2.0",
     "ffmpeg-binaries": "^3.2.2",
     "ffmpeg-static": "^3.0.0",
-    "node-opus": "^0.3.3"
+    "node-opus": "^0.3.3",
+    "shakespeare-insult": "^1.0.0"
   }
 }
