@@ -1,59 +1,73 @@
-const Discord = require("discord.js");
+const tmi = require("tmi.js");
 const axios = require("axios");
-const client = new Discord.Client();
 const dotenv = require("dotenv");
 const ffmpeg_static = require("ffmpeg-static");
 const shakespeare = require("shakespeare-insult");
+const voiceChannel = require("./discord/voicechannel");
 dotenv.config();
+const discordClient = require("./discord/client");
 
-const audioPath = process.env.AUDIO_PATH;
-const discordBotKey = process.env.DISCORD_BOT_KEY;
+const { playSoundEffect, joinVoiceChannel } = voiceChannel;
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+const twitchClient = new tmi.Client({
+  options: { debug: true },
+  connection: {
+    reconnect: true,
+    secure: true
+  },
+  identity: {
+    username: "krazeybot",
+    password: "oauth:sod8595cyz6zaow8n14k5i5a135ov4"
+  },
+  channels: ["krazeyhazey"]
 });
 
-client.on("message", async message => {
-  const playSoundEffect = async (file, volumeLevel) => {
-    if (!message.guild) return;
+twitchClient.connect();
+twitchClient.on("message", (channel, tags, message, self) => {
+  if (self) return;
+  if (message.toLowerCase() === "!hello") {
+    twitchClient.say(channel, `@${tags.username}, heya!`);
+  }
+  if (message.toLowerCase() === "!fire") {
+    playSoundEffect("barrel.mp3");
+  }
+});
 
-    if (message.member.voice.channel) {
-      const connection = await message.member.voice.channel.join();
-      const dispatcher = connection.play(`${audioPath}${file}`, {
-        volume: volumeLevel
-      });
-    } else {
-      message.reply("You need to join a voice channel first!");
-    }
-  };
+discordClient.on("ready", () => {
+  console.log(`Logged in as ${discordClient.user.tag}!`);
+});
 
+discordClient.on("message", async message => {
   switch (message.content) {
+    case "!join":
+      await joinVoiceChannel("633925300912128030");
+      break;
     case "!fire":
-      playSoundEffect("barrel.mp3");
+      await playSoundEffect("barrel.mp3");
       break;
     case "!honk":
-      playSoundEffect("honk.wav");
+      await playSoundEffect("honk.wav");
       break;
     case "!scaryviolins":
-      playSoundEffect("scaryviolins.mp3", 0.3);
+      await playSoundEffect("scaryviolins.mp3", 0.3);
       break;
     case "!sad":
-      playSoundEffect("sad.mp3");
+      await playSoundEffect("sad.mp3");
       break;
     case "!rocket":
-      playSoundEffect("rocket.mp3");
+      await playSoundEffect("rocket.mp3");
       break;
     case "!voice":
-      playSoundEffect("voice.mp3");
+      await playSoundEffect("voice.mp3");
       break;
     case "!bye":
-      playSoundEffect("bye.mp3");
+      await playSoundEffect("bye.mp3");
       break;
     case "!jumpscare":
-      playSoundEffect("jumpscare.mp3");
+      await playSoundEffect("jumpscare.mp3");
       break;
     case "!feels":
-      playSoundEffect("feels.mp3");
+      await playSoundEffect("feels.mp3");
       break;
     case "!insult":
       const permissions = message.member.roles.some(r =>
@@ -93,7 +107,7 @@ client.on("message", async message => {
 });
 
 // Create an event listener for new guild members
-client.on("guildMemberAdd", member => {
+discordClient.on("guildMemberAdd", member => {
   // Send the message to a designated channel on a server:
   const channel = member.guild.channels.find(ch => ch.name === "general");
   // Do nothing if the channel wasn't found on this server
@@ -109,5 +123,3 @@ client.on("guildMemberAdd", member => {
     `Hey ${member.user.username}, welcome to The Fold :tada::hugging:!`
   );
 });
-
-client.login(discordBotKey);
