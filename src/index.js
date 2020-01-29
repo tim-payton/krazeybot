@@ -1,33 +1,31 @@
 const Discord = require("discord.js");
 const axios = require("axios");
-const client = new Discord.Client();
 const dotenv = require("dotenv");
 const ffmpeg_static = require("ffmpeg-static");
 const shakespeare = require("shakespeare-insult");
+const discordClient = require("./discord/client");
+const voiceChannel = require("./discord/voicechannel");
+const twitchClient = require("./twitch/client");
 dotenv.config();
 
-const audioPath = process.env.AUDIO_PATH;
-const discordBotKey = process.env.DISCORD_BOT_KEY;
+const { playSoundEffect, joinVoiceChannel } = voiceChannel;
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+twitchClient.on("message", (channel, tags, message, self) => {
+  if (self) return;
+  if (message.toLowerCase() === "!fire") {
+    playSoundEffect("barrel.mp3");
+  }
 });
 
-client.on("message", async message => {
-  const playSoundEffect = async (file, volumeLevel) => {
-    if (!message.guild) return;
+discordClient.on("ready", () => {
+  console.log(`Logged in as ${discordClient.user.tag}!`);
+});
 
-    if (message.member.voice.channel) {
-      const connection = await message.member.voice.channel.join();
-      const dispatcher = connection.play(`${audioPath}${file}`, {
-        volume: volumeLevel
-      });
-    } else {
-      message.reply("You need to join a voice channel first!");
-    }
-  };
-
+discordClient.on("message", async message => {
   switch (message.content) {
+    case "!join":
+      joinVoiceChannel("633925300912128030");
+      break;
     case "!fire":
       playSoundEffect("barrel.mp3");
       break;
@@ -93,7 +91,7 @@ client.on("message", async message => {
 });
 
 // Create an event listener for new guild members
-client.on("guildMemberAdd", member => {
+discordClient.on("guildMemberAdd", member => {
   // Send the message to a designated channel on a server:
   const channel = member.guild.channels.find(ch => ch.name === "general");
   // Do nothing if the channel wasn't found on this server
@@ -109,5 +107,3 @@ client.on("guildMemberAdd", member => {
     `Hey ${member.user.username}, welcome to The Fold :tada::hugging:!`
   );
 });
-
-client.login(discordBotKey);
