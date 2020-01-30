@@ -10,26 +10,15 @@ dotenv.config();
 
 const { playSoundEffect, joinVoiceChannel } = voiceChannel;
 
-twitchClient.on("message", (channel, tags, message, self) => {
-  if (self) return;
-  if (message.toLowerCase() === "!fire") {
-    playSoundEffect("barrel.mp3");
-  }
-});
-
-discordClient.on("ready", () => {
-  console.log(`Logged in as ${discordClient.user.tag}!`);
-});
-
-discordClient.on("message", async message => {
+const commands = message => {
   switch (message.content) {
     case "!join":
       joinVoiceChannel("633925300912128030");
       break;
-    case "!fire":
+    case "krazey2keg":
       playSoundEffect("barrel.mp3");
       break;
-    case "!honk":
+    case "krazey2honk":
       playSoundEffect("honk.wav");
       break;
     case "!scaryviolins":
@@ -52,6 +41,27 @@ discordClient.on("message", async message => {
       break;
     case "!feels":
       playSoundEffect("feels.mp3");
+      break;
+    case "!door":
+      playSoundEffect("door.mp3");
+      break;
+    case "!alienhiss":
+      playSoundEffect("alienhiss.mp3");
+      break;
+    case "!data":
+      playSoundEffect("data.mp3");
+      break;
+    case "!nice":
+      playSoundEffect("nice.mp3");
+      break;
+    case "!clap":
+      playSoundEffect("clap.mp3");
+      break;
+    case "!misty":
+      playSoundEffect("misty.mp3");
+      break;
+    case "!banana":
+      playSoundEffect("banana.mp3");
       break;
     case "!insult":
       const permissions = message.member.roles.some(r =>
@@ -88,6 +98,22 @@ discordClient.on("message", async message => {
     default:
       break;
   }
+};
+
+twitchClient.on("message", (channel, tags, message, self) => {
+  if (self) return;
+  const newMessage = {
+    content: message.toLowerCase()
+  };
+  commands(newMessage);
+});
+
+discordClient.on("ready", () => {
+  console.log(`Logged in as ${discordClient.user.tag}!`);
+});
+
+discordClient.on("message", async message => {
+  commands(message);
 });
 
 // Create an event listener for new guild members
