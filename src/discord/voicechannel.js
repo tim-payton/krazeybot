@@ -1,11 +1,10 @@
-const Discord = require("discord.js");
 const dotenv = require("dotenv");
 const client = require("./client");
 dotenv.config();
 const audioPath = process.env.AUDIO_PATH;
 
 const joinVoiceChannel = async channelId => {
-  const channel = client.channels.get(channelId);
+  const channel = client.channels.cache.get(channelId);
   channel.join();
 };
 
