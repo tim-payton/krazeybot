@@ -11,12 +11,15 @@ dotenv.config();
 const { playSoundEffect, joinVoiceChannel } = voiceChannel;
 const { rconCommand } = minecraft;
 
-const commands = async message => {
+const commands = async (message, source) => {
   if (message.content) {
     const [command, ...msg] = message.content.split(" ");
-    const adminPermissions = message.member.roles.cache.some(r =>
-      ["Stream team", "Admin"].includes(r.name)
-    );
+    const adminPermissions =
+      source === "discord"
+        ? message.member.roles.cache.some(r =>
+            ["Stream team", "Admin"].includes(r.name)
+          )
+        : false;
     switch (command) {
       case "!join":
         joinVoiceChannel("633925300912128030");
@@ -120,7 +123,7 @@ twitchClient.on("message", (channel, tags, message, self) => {
   const newMessage = {
     content: message.toLowerCase()
   };
-  commands(newMessage);
+  commands(newMessage, "twitch");
 });
 
 discordClient.on("ready", () => {
@@ -128,7 +131,7 @@ discordClient.on("ready", () => {
 });
 
 discordClient.on("message", async message => {
-  commands(message);
+  commands(message, "discord");
 });
 
 // Create an event listener for new guild members
