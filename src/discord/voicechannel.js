@@ -10,6 +10,7 @@ const joinVoiceChannel = async channelId => {
 
 const playSoundEffect = async (file, volumeLevel) => {
   const broadcast = client.voice.createBroadcast();
+  console.log(`${audioPath}${file}`);
   broadcast.play(`${audioPath}${file}`, {
     volume: volumeLevel | 1
   });

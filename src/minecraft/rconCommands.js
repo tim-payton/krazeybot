@@ -2,11 +2,11 @@ const { Rcon } = require("rcon-client");
 
 const rconCommand = async command => {
   const rcon = await Rcon.connect({
-    host: "minecraft.supereffectivephotography.com",
-    port: 25575,
-    password: "kA7H^7s!#@pw6RP7m*S"
+    host: "localhost",
+    port: 27015,
+    password: "test"
   });
-  console.log(command);
+  console.log('command:', command);
   let response = await rcon.send(command);
   return response;
 };
