@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/tim-payton/krazeybot#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/uws": "^11.149.1",
     "axios": "^0.19.2",
     "circular-json": "^0.5.9",
